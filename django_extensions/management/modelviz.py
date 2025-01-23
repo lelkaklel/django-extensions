@@ -103,7 +103,7 @@ class ModelGraph:
             self.app_labels = app_labels
         self.rankdir = kwargs.get("rankdir")
         self.display_field_choices = kwargs.get("display_field_choices", False)
-        self.show_docstrings = kwargs.get("show_docstrings", False)
+        self.show_docstring = kwargs.get("show_docstring", False)
 
     def generate_graph_data(self):
         self.process_apps()
@@ -157,7 +157,7 @@ class ModelGraph:
         if isinstance(field, (OneToOneField, ForeignKey)):
             t += " ({0})".format(field.remote_field.field_name)
         if self.display_field_choices and field.choices is not None:
-            choices = {c for c, _ in field.choices}
+            choices = {c for _, c in field.choices}
             t = str(choices)
         # TODO: ManyToManyField, GenericRelation
 
@@ -251,11 +251,17 @@ class ModelGraph:
         context = {
             'model': appmodel,
             'app_name': appmodel.__module__.replace(".", "_"),
-            'name': appmodel.__name__,
+            'name': appmodel.__name__.strip(),
             'abstracts': appmodel_abstracts,
+            'is_abstract': appmodel._meta.abstract,
             'fields': [],
             'relations': []
         }
+
+        if self.show_docstring:
+            context['docstring'] = '<BR ALIGN="LEFT"/>'.join(x.strip() for x in appmodel.__doc__.strip().split('\n')) + '<BR ALIGN="LEFT"/>' if appmodel.__doc__ else None
+        else:
+            context['docstring'] = None
 
         if self.verbose_names and appmodel._meta.verbose_name:
             context['label'] = force_str(appmodel._meta.verbose_name)

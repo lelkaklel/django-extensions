@@ -6,7 +6,8 @@
   {% block digraph_options %}fontname = "Roboto"
   fontsize = 16
   splines  = true
-  rankdir = "{{ rankdir }}"{% endblock %}
+  rankdir = "{{ rankdir }}"
+  dpi = 220{% endblock %}
 
   node [{% block node_options %}
     fontname = "Roboto"
@@ -20,8 +21,8 @@
   {% endblock %}]
 
   // Labels
-{% block labels %}{% for graph in graphs %}{% include "django_extensions/graph_models/custom/label.dot" %}{% endfor %}{% endblock %}
+{% block labels %}{% for graph in graphs %}{% include "django_extensions/graph_models/extra/label.dot" %}{% endfor %}{% endblock %}
 
   // Relations
-{% block relations %}{% for graph in graphs %}{% include "django_extensions/graph_models/custom/relation.dot" %}{% endfor %}{% endblock %}
+{% block relations %}{% for graph in graphs %}{% include "django_extensions/graph_models/extra/relation.dot" %}{% endfor %}{% endblock %}
 }{% endblock %}

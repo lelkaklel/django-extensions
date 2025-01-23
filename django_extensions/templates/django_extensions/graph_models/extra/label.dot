@@ -8,31 +8,38 @@
           </TD></TR>
           </TABLE>
           >
-    color=olivedrab4
+    color="#A04000"
     style="rounded"{% endif %}
-{% indentby 0 if use_subgraph %}{% for model in graph.models %}
+{% indentby 2 if use_subgraph %}{% for model in graph.models %}
   {{ model.app_name }}_{{ model.name }} [label=<
-    <TABLE BGCOLOR="palegoldenrod" BORDER="0" CELLBORDER="0" CELLSPACING="0">
-    <TR><TD COLSPAN="3" CELLPADDING="0" ALIGN="CENTER" BGCOLOR="olivedrab4">
-    <FONT FACE="Helvetica Bold" COLOR="white">{{ model.name }}</FONT></TD></TR>
-    <TR><TD COLSPAN="3" CELLPADDING="0" ALIGN="CENTER" BGCOLOR="olivedrab4">
-    <FONT FACE="Helvetica Bold" COLOR="white">{{ model.label }}</FONT></TD></TR>
-    {% if model.abstracts %}<TR><TD COLSPAN="3" CELLPADDING="0" ALIGN="CENTER" BGCOLOR="olivedrab4">
-    <FONT FACE="Helvetica Bold" COLOR="white"><FONT FACE="Helvetica Italic" COLOR="GRAY">&lt;{{ model.abstracts|join:"," }}&gt;</FONT>
-    </FONT></TD></TR>{% endif %}
+    <TABLE BGCOLOR="{% if model.is_abstract %}#21618C{% else %}#A04000{% endif %}" BORDER="0" CELLSPACING="0" CELLPADDING="4">
+      <TR>
+        <TD COLSPAN="3" HEIGHT="30" VALIGN="BOTTOM" ALIGN="CENTER" BGCOLOR="{% if model.is_abstract %}#21618C{% else %}#A04000{% endif %}"><FONT FACE="Helvetica Bold" COLOR="white">{{ model.name }}</FONT></TD>
+      </TR>
+      <TR>
+        <TD COLSPAN="3" HEIGHT="20" VALIGN="MIDDLE" ALIGN="CENTER" BGCOLOR="{% if model.is_abstract %}#21618C{% else %}#A04000{% endif %}"><FONT FACE="Helvetica Bold" COLOR="#F9E79F">{{ model.label }}</FONT></TD>
+      </TR>
+      {% if model.abstracts %}
+      <TR>
+        <TD COLSPAN="3" HEIGHT="30" VALIGN="TOP" ALIGN="CENTER" BGCOLOR="{% if model.is_abstract %}#21618C{% else %}#A04000{% endif %}"><FONT FACE="Helvetica Bold" COLOR="white"><FONT FACE="Helvetica Italic" COLOR="silver">&lt; {{ model.abstracts|join:", " }} &gt;</FONT></FONT></TD>
+      </TR>
+      {% endif %}
   {% if not disable_fields %}{% for field in model.fields %}
   {% if disable_abstract_fields and field.abstract %}
   {% else %}
-    <TR><TD ALIGN="LEFT" BORDER="0">
-    <FONT {% if not field.primary_key and field.blank %}COLOR="#7B7B7B" {% endif %}FACE="Helvetica {% if field.abstract %}Italic{% endif %}{% if field.relation or field.primary_key %}Bold{% endif %}">{{ field.name }}</FONT>
-    </TD><TD ALIGN="LEFT">
-    <FONT {% if not field.primary_key and field.blank %}COLOR="#7B7B7B" {% endif %}FACE="Helvetica {% if field.abstract %}Italic{% endif %}{% if field.relation or field.primary_key %}Bold{% endif %}">{{ field.label }}</FONT>
-    </TD><TD ALIGN="LEFT">
-    <FONT {% if not field.primary_key and field.blank %}COLOR="#7B7B7B" {% endif %}FACE="Helvetica {% if field.abstract %}Italic{% endif %}{% if field.relation or field.primary_key %}Bold{% endif %}">{{ field.type }}</FONT>
-    </TD></TR>
+    <TR>
+      <TD COLSPAN="1" ALIGN="LEFT" BGCOLOR="#F9E79F"><FONT {% if not field.primary_key and field.blank %}COLOR="#7B7B7B" {% endif %}FACE="Helvetica {% if field.abstract %}Italic{% endif %}{% if field.relation or field.primary_key %}Bold{% endif %}">{{ field.name }}</FONT></TD>
+      <TD COLSPAN="1" ALIGN="LEFT" BGCOLOR="#F9E79F"><FONT {% if not field.primary_key and field.blank %}COLOR="#7B7B7B" {% endif %}FACE="Helvetica {% if field.abstract %}Italic{% endif %}{% if field.relation or field.primary_key %}Bold{% endif %}">{{ field.label }}</FONT></TD>
+      <TD COLSPAN="1" ALIGN="LEFT" BGCOLOR="#F9E79F"><FONT {% if not field.primary_key and field.blank %}COLOR="#7B7B7B" {% endif %}FACE="Helvetica {% if field.abstract %}Italic{% endif %}{% if field.relation or field.primary_key %}Bold{% endif %}">{{ field.type }}</FONT></TD>
+    </TR>
   {% endif %}
   {% endfor %}{% endif %}
-    </TABLE>
-    >]
+  {% if model.docstring %}
+    <TR>
+      <TD COLSPAN="3" ALIGN="LEFT" BGCOLOR="#B2BABB"><FONT FACE="Helvetica Italic" COLOR="white">{{ model.docstring|safe }}</FONT></TD>
+    </TR>
+  {% endif %}
+  </TABLE>
+  >]
 {% endfor %}{% endindentby %}
 {% if use_subgraph %}  }{% endif %}
