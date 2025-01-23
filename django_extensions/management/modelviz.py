@@ -103,6 +103,7 @@ class ModelGraph:
             self.app_labels = app_labels
         self.rankdir = kwargs.get("rankdir")
         self.display_field_choices = kwargs.get("display_field_choices", False)
+        self.show_docstrings = kwargs.get("show_docstrings", False)
 
     def generate_graph_data(self):
         self.process_apps()

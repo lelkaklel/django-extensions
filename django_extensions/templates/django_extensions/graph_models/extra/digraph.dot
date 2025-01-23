@@ -1,0 +1,27 @@
+{% block digraph %}digraph model_graph {
+  // Dotfile by Django-Extensions graph_models
+  // Created: {{ created_at }}
+  {% if cli_options %}// Cli Options: {{ cli_options }}{% endif %}
+
+  {% block digraph_options %}fontname = "Roboto"
+  fontsize = 16
+  splines  = true
+  rankdir = "{{ rankdir }}"{% endblock %}
+
+  node [{% block node_options %}
+    fontname = "Roboto"
+    fontsize = 16
+    shape = "plaintext"
+  {% endblock %}]
+
+  edge [{% block edge_options %}
+    fontname = "Roboto"
+    fontsize = 16
+  {% endblock %}]
+
+  // Labels
+{% block labels %}{% for graph in graphs %}{% include "django_extensions/graph_models/custom/label.dot" %}{% endfor %}{% endblock %}
+
+  // Relations
+{% block relations %}{% for graph in graphs %}{% include "django_extensions/graph_models/custom/relation.dot" %}{% endfor %}{% endblock %}
+}{% endblock %}

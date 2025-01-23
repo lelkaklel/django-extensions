@@ -197,6 +197,12 @@ class Command(BaseCommand):
                 'choices': ['TB', 'BT', 'LR', 'RL'],
                 'help': 'Set direction of graph layout. Supported directions: "TB", "LR", "BT", "RL", corresponding to directed graphs drawn from top to bottom, from left to right, from bottom to top, and from right to left, respectively. Default is TB.'
             },
+            '--show-docstring': {
+                'action': 'store_true',
+                'default': False,
+                'dest': 'show_docstring',
+                'help': 'Add model docstring to graph.',
+            },
         }
 
         defaults = getattr(settings, 'GRAPH_MODELS', None)
